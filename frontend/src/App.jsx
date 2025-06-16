@@ -26,7 +26,7 @@ function App() {
             <motion.div
               whileHover={{ scale: 1.05, rotate: 5 }}
               className={`p-4 rounded-2xl ${darkMode ? 'bg-white' : 'bg-black'
-                } transition-all duration-300`}
+                } transition-all duration-300 shadow-lg`}
             >
               <ShoppingBag className={`h-10 w-10 ${darkMode ? 'text-black' : 'text-white'
                 }`} />
@@ -46,7 +46,7 @@ function App() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={toggleDarkMode}
-            className={`p-4 rounded-2xl transition-all duration-300 ${darkMode
+            className={`p-4 rounded-2xl transition-all duration-300 shadow-lg ${darkMode
               ? 'bg-gray-900 hover:bg-gray-800 border border-gray-800'
               : 'bg-gray-100 hover:bg-gray-200 border border-gray-200'
               }`}
@@ -65,18 +65,18 @@ function App() {
           </motion.button>
         </motion.div>
 
-        {/* Main Content */}
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
-          {/* Left Column - Forms and Controls */}
-          <div className="xl:col-span-1 space-y-8">
+        {/* Main Content - Improved Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+          {/* Left Column - Forms and Controls (2/5 width) */}
+          <div className="lg:col-span-2 space-y-8">
             <AddItemForm />
             <CategoryFilter />
             <Summary />
             <ExportImport />
           </div>
 
-          {/* Right Column - Shopping List */}
-          <div className="xl:col-span-3">
+          {/* Right Column - Shopping List (3/5 width) */}
+          <div className="lg:col-span-3">
             <ShoppingList />
           </div>
         </div>
