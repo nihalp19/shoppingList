@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, DollarSign, Tag } from 'lucide-react';
 import { useShoppingStore } from '../stores/shoppingStore';
+import CustomDropdown from './CustomDropDown';
 
 const AddItemForm = () => {
   const { addItem, categories, addCategory, darkMode } = useShoppingStore();
@@ -51,6 +52,10 @@ const AddItemForm = () => {
       setNewCategory('');
       setShowNewCategory(false);
     }
+  };
+
+  const handleCategoryChange = (category) => {
+    setForm({ ...form, category });
   };
 
   return (
@@ -141,7 +146,7 @@ const AddItemForm = () => {
           )}
         </div>
 
-        {/* Category */}
+        {/* Category - Now using Custom Dropdown */}
         <div>
           <label className={`block text-sm font-medium mb-3 ${
             darkMode ? 'text-gray-300' : 'text-gray-700'
@@ -149,25 +154,15 @@ const AddItemForm = () => {
             Category
           </label>
           <div className="flex gap-3">
-            <div className="flex-1 relative">
-              <Tag className={`absolute left-0 top-4 h-5 w-5 ${
-                darkMode ? 'text-gray-500' : 'text-gray-400'
-              }`} />
-              <select
+            <div className="flex-1">
+              <CustomDropdown
+                options={categories}
                 value={form.category}
-                onChange={(e) => setForm({ ...form, category: e.target.value })}
-                className={`w-full pl-8 pr-0 py-4 bg-transparent border-0 border-b-2 transition-all duration-300 focus:outline-none ${
-                  darkMode 
-                    ? 'border-gray-800 focus:border-white text-white' 
-                    : 'border-gray-200 focus:border-black text-black'
-                }`}
-              >
-                {categories.map(cat => (
-                  <option key={cat} value={cat} className={darkMode ? 'bg-black' : 'bg-white'}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
+                onChange={handleCategoryChange}
+                darkMode={darkMode}
+                placeholder="Select a category"
+                icon={<Tag className="h-5 w-5" />}
+              />
             </div>
             
             <motion.button
