@@ -32,24 +32,24 @@ const ShoppingList = () => {
         darkMode 
           ? 'bg-gray-950 border border-gray-800' 
           : 'bg-gray-50 border border-gray-200'
-      } rounded-3xl p-8 transition-all duration-300 shadow-lg`}
+      } rounded-3xl p-4 sm:p-8 transition-all duration-300 shadow-lg`}
     >
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6 sm:mb-8">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <List className={`h-6 w-6 ${
+            <List className={`h-5 w-5 sm:h-6 sm:w-6 ${
               darkMode ? 'text-white' : 'text-black'
             }`} />
-            <h2 className="text-2xl font-light">Your List</h2>
+            <h2 className="text-xl sm:text-2xl font-light">Your List</h2>
           </div>
-          <div className={`h-px w-16 ${
+          <div className={`h-px w-12 sm:w-16 ${
             darkMode ? 'bg-white' : 'bg-black'
           }`} />
         </div>
         <motion.div 
           whileHover={{ scale: 1.05 }}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
             darkMode ? 'bg-gray-900 text-gray-300 border border-gray-800' : 'bg-gray-200 text-gray-600 border border-gray-200'
           }`}
         >
@@ -58,9 +58,9 @@ const ShoppingList = () => {
       </div>
 
       {/* Search and Sort */}
-      <div className="flex flex-col lg:flex-row gap-4 mb-8">
+      <div className="flex flex-col gap-3 sm:gap-4 mb-6 sm:mb-8 sm:flex-row">
         <div className="flex-1 relative">
-          <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${
+          <Search className={`absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 transition-colors duration-300 ${
             darkMode ? 'text-gray-500' : 'text-gray-400'
           }`} />
           <input
@@ -68,7 +68,7 @@ const ShoppingList = () => {
             placeholder="Search items..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className={`w-full pl-12 pr-4 py-4 rounded-2xl border transition-all duration-300 focus:outline-none shadow-sm focus:shadow-md ${
+            className={`w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-4 rounded-2xl border transition-all duration-300 focus:outline-none shadow-sm focus:shadow-md ${
               darkMode 
                 ? 'bg-gray-900 border-gray-800 text-white placeholder-gray-500 focus:border-gray-600' 
                 : 'bg-white border-gray-200 text-black placeholder-gray-400 focus:border-gray-400'
@@ -76,8 +76,8 @@ const ShoppingList = () => {
           />
         </div>
         
-        <div className="flex items-center gap-3 min-w-0 lg:min-w-[200px]">
-          <SortAsc className={`h-5 w-5 flex-shrink-0 ${
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0 sm:min-w-[200px]">
+          <SortAsc className={`h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 ${
             darkMode ? 'text-gray-500' : 'text-gray-400'
           }`} />
           <div className="flex-1">
@@ -99,7 +99,7 @@ const ShoppingList = () => {
       </div>
 
       {/* Items List */}
-      <div className="space-y-4">
+      <div className="sm:space-y-4">
         <AnimatePresence mode="popLayout">
           {filteredItems.length === 0 ? (
             <motion.div
@@ -107,7 +107,7 @@ const ShoppingList = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.3 }}
-              className="text-center py-16"
+              className="text-center py-12 sm:py-16"
             >
               <motion.div
                 animate={{ 
@@ -120,11 +120,11 @@ const ShoppingList = () => {
                   ease: "easeInOut"
                 }}
               >
-                <Package className={`h-20 w-20 mx-auto mb-6 ${
+                <Package className={`h-16 w-16 sm:h-20 sm:w-20 mx-auto mb-4 sm:mb-6 ${
                   darkMode ? 'text-gray-800' : 'text-gray-300'
                 }`} />
               </motion.div>
-              <p className={`text-xl font-light mb-2 ${
+              <p className={`text-lg sm:text-xl font-light mb-2 ${
                 darkMode ? 'text-gray-400' : 'text-gray-500'
               }`}>
                 {searchTerm ? 'No items match your search' : 'Your list is empty'}
@@ -136,13 +136,67 @@ const ShoppingList = () => {
               </p>
             </motion.div>
           ) : (
-            filteredItems.map((item, index) => (
-              <ShoppingItem
-                key={item.id}
-                item={item}
-                index={index}
-              />
-            ))
+            <>
+              {/* Mobile: Horizontal Scroll */}
+              <div className="block sm:hidden">
+                <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
+                  <style jsx>{`
+                    .scrollbar-hide {
+                      -ms-overflow-style: none;
+                      scrollbar-width: none;
+                    }
+                    .scrollbar-hide::-webkit-scrollbar {
+                      display: none;
+                    }
+                  `}</style>
+                  {filteredItems.map((item, index) => (
+                    <div key={item.id} className="flex-shrink-0 w-80">
+                      <ShoppingItem
+                        item={item}
+                        index={index}
+                      />
+                    </div>
+                  ))}
+                  {/* Spacer to show there are more items */}
+                  {filteredItems.length > 1 && (
+                    <div className="flex-shrink-0 w-4" />
+                  )}
+                </div>
+                
+                {/* Scroll Indicator */}
+                {filteredItems.length > 1 && (
+                  <div className="flex justify-center mt-4">
+                    <div className="flex gap-1">
+                      {filteredItems.slice(0, Math.min(5, filteredItems.length)).map((_, index) => (
+                        <div
+                          key={index}
+                          className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${
+                            darkMode ? 'bg-gray-700' : 'bg-gray-300'
+                          }`}
+                        />
+                      ))}
+                      {filteredItems.length > 5 && (
+                        <div className={`h-1.5 w-4 rounded-full transition-all duration-300 ${
+                          darkMode ? 'bg-gray-700' : 'bg-gray-300'
+                        }`} />
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Desktop: Vertical Layout */}
+              <div className="hidden sm:block">
+                {filteredItems.map((item, index) => (
+                  <div key={item.id} className="mb-4">
+                    <ShoppingItem
+                      item={item}
+                      index={index}
+                    />
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </AnimatePresence>
       </div>
