@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Download, Upload, FileJson, FileSpreadsheet, Trash2 } from 'lucide-react';
+import { Download, Upload, FileJson, FileSpreadsheet, Trash2, Database } from 'lucide-react';
 import { useShoppingStore } from '../stores/shoppingStore';
 
 const ExportImport = () => {
@@ -56,7 +56,7 @@ const ExportImport = () => {
       try {
         const data = JSON.parse(e.target.result);
         if (importData(data)) {
-          alert('Shopping list imported successfully!');
+          // Success feedback could be added here
         } else {
           alert('Invalid file format. Please select a valid JSON file.');
         }
@@ -97,109 +97,137 @@ const ExportImport = () => {
         darkMode 
           ? 'bg-gray-950 border border-gray-800' 
           : 'bg-gray-50 border border-gray-200'
-      } rounded-3xl p-8 transition-all duration-300`}
+      } rounded-3xl p-8 transition-all duration-300 shadow-lg`}
     >
       <div className="mb-8">
-        <h2 className="text-2xl font-light mb-2">Data</h2>
+        <div className="flex items-center gap-3 mb-2">
+          <Database className={`h-6 w-6 ${
+            darkMode ? 'text-white' : 'text-black'
+          }`} />
+          <h2 className="text-2xl font-light">Data</h2>
+        </div>
         <div className={`h-px w-16 ${
           darkMode ? 'bg-white' : 'bg-black'
         }`} />
       </div>
 
-      <div className="space-y-4">
-        {/* Export Buttons */}
-        <div className="grid grid-cols-2 gap-3">
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleExportJSON}
-            className={`flex items-center justify-center gap-2 p-4 rounded-2xl border transition-all duration-300 ${
-              darkMode 
-                ? 'bg-gray-900 border-gray-800 text-gray-300 hover:border-gray-700' 
-                : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'
-            }`}
-          >
-            <FileJson className="h-4 w-4" />
-            <span className="text-sm font-medium">JSON</span>
-          </motion.button>
-          
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleExportCSV}
-            className={`flex items-center justify-center gap-2 p-4 rounded-2xl border transition-all duration-300 ${
-              darkMode 
-                ? 'bg-gray-900 border-gray-800 text-gray-300 hover:border-gray-700' 
-                : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'
-            }`}
-          >
-            <FileSpreadsheet className="h-4 w-4" />
-            <span className="text-sm font-medium">CSV</span>
-          </motion.button>
+      <div className="space-y-6">
+        {/* Export Section */}
+        <div>
+          <h3 className={`text-sm font-medium mb-3 ${
+            darkMode ? 'text-gray-300' : 'text-gray-700'
+          }`}>
+            Export Data
+          </h3>
+          <div className="grid grid-cols-2 gap-3">
+            <motion.button
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleExportJSON}
+              className={`flex items-center justify-center gap-2 p-4 rounded-2xl border transition-all duration-300 shadow-sm ${
+                darkMode 
+                  ? 'bg-gray-900 border-gray-800 text-gray-300 hover:border-gray-700 hover:shadow-md' 
+                  : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:shadow-md'
+              }`}
+            >
+              <FileJson className="h-4 w-4" />
+              <span className="text-sm font-medium">JSON</span>
+            </motion.button>
+            
+            <motion.button
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleExportCSV}
+              className={`flex items-center justify-center gap-2 p-4 rounded-2xl border transition-all duration-300 shadow-sm ${
+                darkMode 
+                  ? 'bg-gray-900 border-gray-800 text-gray-300 hover:border-gray-700 hover:shadow-md' 
+                  : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:shadow-md'
+              }`}
+            >
+              <FileSpreadsheet className="h-4 w-4" />
+              <span className="text-sm font-medium">CSV</span>
+            </motion.button>
+          </div>
         </div>
 
-        {/* Import Button */}
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => fileInputRef.current?.click()}
-          className={`w-full flex items-center justify-center gap-2 p-4 rounded-2xl border transition-all duration-300 ${
-            darkMode 
-              ? 'bg-gray-900 border-gray-800 text-gray-300 hover:border-gray-700' 
-              : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'
-          }`}
-        >
-          <Upload className="h-4 w-4" />
-          <span className="font-medium">Import JSON</span>
-        </motion.button>
-
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".json"
-          onChange={handleImport}
-          className="hidden"
-        />
-
-        {/* Clear Buttons */}
-        <div className="pt-4 border-t border-opacity-20 space-y-3">
+        {/* Import Section */}
+        <div>
+          <h3 className={`text-sm font-medium mb-3 ${
+            darkMode ? 'text-gray-300' : 'text-gray-700'
+          }`}>
+            Import Data
+          </h3>
           <motion.button
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
-            onClick={handleClearPurchased}
-            disabled={items.filter(item => item.purchased).length === 0}
-            className={`w-full flex items-center justify-center gap-2 p-4 rounded-2xl transition-all duration-300 ${
-              items.filter(item => item.purchased).length === 0
-                ? darkMode
-                  ? 'bg-gray-900 border-gray-800 text-gray-600 cursor-not-allowed'
-                  : 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed'
-                : darkMode
-                  ? 'bg-gray-900 border-gray-800 text-gray-400 hover:text-gray-200 hover:border-gray-700'
-                  : 'bg-white border-gray-200 text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            } border`}
+            onClick={() => fileInputRef.current?.click()}
+            className={`w-full flex items-center justify-center gap-2 p-4 rounded-2xl border transition-all duration-300 shadow-sm ${
+              darkMode 
+                ? 'bg-gray-900 border-gray-800 text-gray-300 hover:border-gray-700 hover:shadow-md' 
+                : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:shadow-md'
+            }`}
           >
-            <Trash2 className="h-4 w-4" />
-            <span className="font-medium">Clear Purchased</span>
+            <Upload className="h-4 w-4" />
+            <span className="font-medium">Import JSON</span>
           </motion.button>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleClearAll}
-            disabled={items.length === 0}
-            className={`w-full flex items-center justify-center gap-2 p-4 rounded-2xl transition-all duration-300 ${
-              items.length === 0
-                ? darkMode
-                  ? 'bg-gray-900 border-gray-800 text-gray-600 cursor-not-allowed'
-                  : 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed'
-                : darkMode
-                  ? 'bg-gray-900 border-gray-800 text-gray-400 hover:text-gray-200 hover:border-gray-700'
-                  : 'bg-white border-gray-200 text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            } border`}
-          >
-            <Trash2 className="h-4 w-4" />
-            <span className="font-medium">Clear All</span>
-          </motion.button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json"
+            onChange={handleImport}
+            className="hidden"
+          />
+        </div>
+
+        {/* Clear Section */}
+        <div className={`pt-6 border-t ${
+          darkMode ? 'border-gray-800' : 'border-gray-200'
+        }`}>
+          <h3 className={`text-sm font-medium mb-3 ${
+            darkMode ? 'text-gray-300' : 'text-gray-700'
+          }`}>
+            Clear Data
+          </h3>
+          <div className="space-y-3">
+            <motion.button
+              whileHover={{ scale: 1.02, y: -1 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleClearPurchased}
+              disabled={items.filter(item => item.purchased).length === 0}
+              className={`w-full flex items-center justify-center gap-2 p-4 rounded-2xl transition-all duration-300 ${
+                items.filter(item => item.purchased).length === 0
+                  ? darkMode
+                    ? 'bg-gray-900 border-gray-800 text-gray-600 cursor-not-allowed opacity-50'
+                    : 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed opacity-50'
+                  : darkMode
+                    ? 'bg-gray-900 border-gray-800 text-gray-400 hover:text-gray-200 hover:border-gray-700 shadow-sm hover:shadow-md'
+                    : 'bg-white border-gray-200 text-gray-500 hover:text-gray-700 hover:border-gray-300 shadow-sm hover:shadow-md'
+              } border`}
+            >
+              <Trash2 className="h-4 w-4" />
+              <span className="font-medium">Clear Purchased</span>
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.02, y: -1 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleClearAll}
+              disabled={items.length === 0}
+              className={`w-full flex items-center justify-center gap-2 p-4 rounded-2xl transition-all duration-300 ${
+                items.length === 0
+                  ? darkMode
+                    ? 'bg-gray-900 border-gray-800 text-gray-600 cursor-not-allowed opacity-50'
+                    : 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed opacity-50'
+                  : darkMode
+                    ? 'bg-gray-900 border-gray-800 text-red-400 hover:text-red-300 hover:border-red-800 shadow-sm hover:shadow-md'
+                    : 'bg-white border-gray-200 text-red-500 hover:text-red-600 hover:border-red-300 shadow-sm hover:shadow-md'
+              } border`}
+            >
+              <Trash2 className="h-4 w-4" />
+              <span className="font-medium">Clear All</span>
+            </motion.button>
+          </div>
         </div>
       </div>
     </motion.div>
