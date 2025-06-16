@@ -2,9 +2,16 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Filter, Eye, EyeOff } from 'lucide-react';
 import { useShoppingStore } from '../stores/shoppingStore';
+import CustomDropdown from './CustomDropDown';
 
 const CategoryFilter = () => {
   const { categories, filter, setFilter, darkMode } = useShoppingStore();
+
+  const categoryOptions = ['all', ...categories];
+  const categoryLabels = {
+    all: 'All Categories',
+    ...Object.fromEntries(categories.map(cat => [cat, cat]))
+  };
 
   return (
     <motion.div
@@ -15,10 +22,15 @@ const CategoryFilter = () => {
         darkMode 
           ? 'bg-gray-950 border border-gray-800' 
           : 'bg-gray-50 border border-gray-200'
-      } rounded-3xl p-8 transition-all duration-300`}
+      } rounded-3xl p-8 transition-all duration-300 shadow-lg`}
     >
       <div className="mb-8">
-        <h2 className="text-2xl font-light mb-2">Filters</h2>
+        <div className="flex items-center gap-3 mb-2">
+          <Filter className={`h-6 w-6 ${
+            darkMode ? 'text-white' : 'text-black'
+          }`} />
+          <h2 className="text-2xl font-light">Filters</h2>
+        </div>
         <div className={`h-px w-16 ${
           darkMode ? 'bg-white' : 'bg-black'
         }`} />
@@ -32,28 +44,28 @@ const CategoryFilter = () => {
           }`}>
             Category
           </label>
-          <select
-            value={filter.category}
-            onChange={(e) => setFilter({ category: e.target.value })}
-            className={`w-full px-0 py-4 bg-transparent border-0 border-b-2 transition-all duration-300 focus:outline-none ${
-              darkMode 
-                ? 'border-gray-800 focus:border-white text-white' 
-                : 'border-gray-200 focus:border-black text-black'
-            }`}
-          >
-            <option value="all" className={darkMode ? 'bg-black' : 'bg-white'}>
-              All Categories
-            </option>
-            {categories.map(cat => (
-              <option key={cat} value={cat} className={darkMode ? 'bg-black' : 'bg-white'}>
-                {cat}
-              </option>
-            ))}
-          </select>
+          <CustomDropdown
+            options={categoryOptions.map(cat => categoryLabels[cat] || cat)}
+            value={categoryLabels[filter.category] || filter.category}
+            onChange={(value) => {
+              const categoryKey = Object.keys(categoryLabels).find(
+                key => categoryLabels[key] === value
+              ) || value;
+              setFilter({ category: categoryKey });
+            }}
+            darkMode={darkMode}
+            placeholder="Select category"
+            icon={<Filter className="h-5 w-5" />}
+          />
         </div>
 
         {/* Show Purchased Toggle */}
         <div>
+          <label className={`block text-sm font-medium mb-3 ${
+            darkMode ? 'text-gray-300' : 'text-gray-700'
+          }`}>
+            Visibility
+          </label>
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -61,19 +73,24 @@ const CategoryFilter = () => {
             className={`w-full flex items-center justify-between p-6 rounded-2xl border transition-all duration-300 ${
               filter.showPurchased
                 ? darkMode
-                  ? 'bg-gray-900 border-gray-700'
-                  : 'bg-gray-100 border-gray-300'
+                  ? 'bg-gray-900 border-gray-700 shadow-inner'
+                  : 'bg-gray-100 border-gray-300 shadow-inner'
                 : darkMode
-                  ? 'bg-gray-900 border-gray-800'
-                  : 'bg-white border-gray-200'
+                  ? 'bg-gray-900 border-gray-800 hover:border-gray-700'
+                  : 'bg-white border-gray-200 hover:border-gray-300 shadow-sm'
             }`}
           >
             <div className="flex items-center gap-4">
-              {filter.showPurchased ? (
-                <Eye className="h-5 w-5" />
-              ) : (
-                <EyeOff className="h-5 w-5" />
-              )}
+              <motion.div
+                animate={{ rotate: filter.showPurchased ? 0 : 180 }}
+                transition={{ duration: 0.3 }}
+              >
+                {filter.showPurchased ? (
+                  <Eye className="h-5 w-5" />
+                ) : (
+                  <EyeOff className="h-5 w-5" />
+                )}
+              </motion.div>
               <span className="font-medium">
                 {filter.showPurchased ? 'Show purchased' : 'Hide purchased'}
               </span>
@@ -86,8 +103,8 @@ const CategoryFilter = () => {
             }`}>
               <motion.div 
                 animate={{ x: filter.showPurchased ? 24 : 2 }}
-                transition={{ duration: 0.2 }}
-                className={`w-5 h-5 rounded-full absolute top-0.5 transition-colors duration-300 ${
+                transition={{ duration: 0.2, type: "spring", stiffness: 500 }}
+                className={`w-5 h-5 rounded-full absolute top-0.5 transition-colors duration-300 shadow-sm ${
                   filter.showPurchased 
                     ? darkMode ? 'bg-black' : 'bg-white'
                     : darkMode ? 'bg-gray-500' : 'bg-white'
