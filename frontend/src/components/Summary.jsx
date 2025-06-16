@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { DollarSign, ShoppingCart, CheckCircle2, Clock } from 'lucide-react';
+import { DollarSign, ShoppingCart, CheckCircle2, Clock, TrendingUp } from 'lucide-react';
 import { useShoppingStore } from '../stores/shoppingStore';
 
 const Summary = () => {
@@ -25,23 +25,29 @@ const Summary = () => {
       label: 'Total',
       value: totalItems,
       icon: ShoppingCart,
+      color: darkMode ? 'text-blue-400' : 'text-blue-600'
     },
     {
       label: 'Done',
       value: purchasedItems,
       icon: CheckCircle2,
+      color: darkMode ? 'text-green-400' : 'text-green-600'
     },
     {
       label: 'Left',
       value: remainingItems,
       icon: Clock,
+      color: darkMode ? 'text-orange-400' : 'text-orange-600'
     },
     {
       label: 'Cost',
       value: `$${totalCost.toFixed(2)}`,
       icon: DollarSign,
+      color: darkMode ? 'text-purple-400' : 'text-purple-600'
     }
   ];
+
+  const progressPercentage = totalCost > 0 ? (purchasedCost / totalCost) * 100 : 0;
 
   return (
     <motion.div
@@ -52,10 +58,15 @@ const Summary = () => {
         darkMode 
           ? 'bg-gray-950 border border-gray-800' 
           : 'bg-gray-50 border border-gray-200'
-      } rounded-3xl p-8 transition-all duration-300`}
+      } rounded-3xl p-8 transition-all duration-300 shadow-lg`}
     >
       <div className="mb-8">
-        <h2 className="text-2xl font-light mb-2">Summary</h2>
+        <div className="flex items-center gap-3 mb-2">
+          <TrendingUp className={`h-6 w-6 ${
+            darkMode ? 'text-white' : 'text-black'
+          }`} />
+          <h2 className="text-2xl font-light">Summary</h2>
+        </div>
         <div className={`h-px w-16 ${
           darkMode ? 'bg-white' : 'bg-black'
         }`} />
@@ -71,14 +82,13 @@ const Summary = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.1 * index, duration: 0.3 }}
-              className={`p-4 rounded-2xl transition-all duration-300 ${
-                darkMode ? 'bg-gray-900' : 'bg-white border border-gray-200'
+              whileHover={{ scale: 1.02, y: -2 }}
+              className={`p-4 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-md ${
+                darkMode ? 'bg-gray-900 border border-gray-800' : 'bg-white border border-gray-200'
               }`}
             >
               <div className="flex items-center gap-3 mb-3">
-                <Icon className={`h-4 w-4 ${
-                  darkMode ? 'text-gray-400' : 'text-gray-600'
-                }`} />
+                <Icon className={`h-4 w-4 ${stat.color}`} />
                 <span className={`text-xs font-medium ${
                   darkMode ? 'text-gray-400' : 'text-gray-600'
                 }`}>
@@ -93,6 +103,20 @@ const Summary = () => {
         })}
       </div>
 
+      {/* Cost Breakdown */}
+      {totalCost > 0 && (
+        <div className="mb-6">
+          <div className="flex justify-between text-sm mb-2">
+            <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+              Spent: ${purchasedCost.toFixed(2)}
+            </span>
+            <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+              Remaining: ${remainingCost.toFixed(2)}
+            </span>
+          </div>
+        </div>
+      )}
+
       {/* Progress Bar */}
       {totalCost > 0 && (
         <div>
@@ -101,18 +125,20 @@ const Summary = () => {
               Progress
             </span>
             <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
-              {((purchasedCost / totalCost) * 100).toFixed(0)}%
+              {progressPercentage.toFixed(0)}%
             </span>
           </div>
-          <div className={`w-full h-2 rounded-full ${
+          <div className={`w-full h-3 rounded-full overflow-hidden ${
             darkMode ? 'bg-gray-800' : 'bg-gray-200'
           }`}>
             <motion.div
               initial={{ width: 0 }}
-              animate={{ width: `${(purchasedCost / totalCost) * 100}%` }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className={`h-full rounded-full ${
-                darkMode ? 'bg-white' : 'bg-black'
+              animate={{ width: `${progressPercentage}%` }}
+              transition={{ duration: 1, ease: "easeOut", delay: 0.5 }}
+              className={`h-full rounded-full bg-gradient-to-r ${
+                darkMode 
+                  ? 'from-blue-500 to-purple-500' 
+                  : 'from-blue-600 to-purple-600'
               }`}
             />
           </div>
