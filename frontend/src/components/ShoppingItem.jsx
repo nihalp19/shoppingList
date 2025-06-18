@@ -128,7 +128,6 @@ const ShoppingItem = ({ item, index }) => {
                 </div>
             ) : (
                 <div className="flex items-center gap-4 sm:gap-6">
-                    {/* Checkbox */}
                     <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
@@ -156,7 +155,6 @@ const ShoppingItem = ({ item, index }) => {
                         )}
                     </motion.button>
 
-                    {/* Item Details */}
                     <div className="flex-1 min-w-0">
                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                             <div className="flex-1 min-w-0">
@@ -190,7 +188,6 @@ const ShoppingItem = ({ item, index }) => {
                         </div>
                     </div>
 
-                    {/* Actions */}
                     <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
                         <motion.button
                             whileHover={{ scale: 1.1, rotate: 5 }}

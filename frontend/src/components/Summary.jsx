@@ -72,7 +72,6 @@ const Summary = () => {
         }`} />
       </div>
 
-      {/* Quick Stats Grid */}
       <div className="grid grid-cols-2 gap-4 mb-8">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
@@ -103,7 +102,6 @@ const Summary = () => {
         })}
       </div>
 
-      {/* Cost Breakdown */}
       {totalCost > 0 && (
         <div className="mb-6">
           <div className="flex justify-between text-sm mb-2">
@@ -117,7 +115,6 @@ const Summary = () => {
         </div>
       )}
 
-      {/* Progress Bar */}
       {totalCost > 0 && (
         <div>
           <div className="flex justify-between text-sm mb-3">

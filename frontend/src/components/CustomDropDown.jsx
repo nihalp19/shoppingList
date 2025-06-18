@@ -72,7 +72,7 @@ const CustomDropdown = ({
 
   return (
     <div ref={dropdownRef} className="relative">
-      {/* Trigger Button */}
+
       <motion.button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -88,7 +88,6 @@ const CustomDropdown = ({
               : 'border-gray-200 hover:border-gray-400'
         }`}
       >
-        {/* Icon */}
         {icon && (
           <div className={`absolute left-0 top-4 ${
             darkMode ? 'text-gray-500' : 'text-gray-400'
@@ -97,7 +96,6 @@ const CustomDropdown = ({
           </div>
         )}
         
-        {/* Selected Value */}
         <span className={`text-left flex-1 ${
           value 
             ? darkMode ? 'text-white' : 'text-black'
@@ -106,7 +104,6 @@ const CustomDropdown = ({
           {value || placeholder}
         </span>
         
-        {/* Chevron */}
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
@@ -116,7 +113,6 @@ const CustomDropdown = ({
         </motion.div>
       </motion.button>
 
-      {/* Dropdown Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -150,7 +146,6 @@ const CustomDropdown = ({
                 >
                   <span className="font-medium">{option}</span>
                   
-                  {/* Check mark for selected option */}
                   <AnimatePresence>
                     {value === option && (
                       <motion.div
@@ -168,7 +163,6 @@ const CustomDropdown = ({
               ))}
             </div>
             
-            {/* Bottom gradient fade */}
             <div className={`absolute bottom-0 left-0 right-0 h-4 pointer-events-none bg-gradient-to-t ${
               darkMode 
                 ? 'from-gray-900/95 to-transparent' 

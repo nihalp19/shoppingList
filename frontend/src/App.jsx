@@ -15,7 +15,6 @@ function App() {
     <div className={`min-h-screen transition-all duration-500 ${darkMode ? 'bg-black text-white' : 'bg-white text-black'
       }`}>
       <div className="container mx-auto px-6 py-12 max-w-7xl">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -65,9 +64,7 @@ function App() {
           </motion.button>
         </motion.div>
 
-        {/* Main Content - Improved Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          {/* Left Column - Forms and Controls (2/5 width) */}
           <div className="lg:col-span-2 space-y-8">
             <AddItemForm />
             <CategoryFilter />
@@ -75,7 +72,6 @@ function App() {
             <ExportImport />
           </div>
 
-          {/* Right Column - Shopping List (3/5 width) */}
           <div className="lg:col-span-3">
             <ShoppingList />
           </div>

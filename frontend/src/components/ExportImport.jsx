@@ -56,7 +56,7 @@ const ExportImport = () => {
       try {
         const data = JSON.parse(e.target.result);
         if (importData(data)) {
-          // Success feedback could be added here
+
         } else {
           alert('Invalid file format. Please select a valid JSON file.');
         }
@@ -67,7 +67,6 @@ const ExportImport = () => {
     };
     reader.readAsText(file);
     
-    // Reset file input
     event.target.value = '';
   };
 
@@ -112,7 +111,6 @@ const ExportImport = () => {
       </div>
 
       <div className="space-y-6">
-        {/* Export Section */}
         <div>
           <h3 className={`text-sm font-medium mb-3 ${
             darkMode ? 'text-gray-300' : 'text-gray-700'
@@ -150,7 +148,7 @@ const ExportImport = () => {
           </div>
         </div>
 
-        {/* Import Section */}
+
         <div>
           <h3 className={`text-sm font-medium mb-3 ${
             darkMode ? 'text-gray-300' : 'text-gray-700'
@@ -180,7 +178,6 @@ const ExportImport = () => {
           />
         </div>
 
-        {/* Clear Section */}
         <div className={`pt-6 border-t ${
           darkMode ? 'border-gray-800' : 'border-gray-200'
         }`}>

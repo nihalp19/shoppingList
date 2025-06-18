@@ -11,10 +11,10 @@ const useShoppingStore = create(
             filter: {
                 category: 'all',
                 showPurchased: true,
-                sortBy: 'name' // name, price, category, date
+                sortBy: 'name' 
             },
 
-            // Actions
+           
             addItem: (item) => {
                 const newItem = {
                     id: Date.now().toString(),
@@ -95,22 +95,18 @@ const useShoppingStore = create(
                 return false;
             },
 
-            // Computed values
             getFilteredItems: () => {
                 const { items, filter } = get();
                 let filtered = [...items];
 
-                // Filter by category
                 if (filter.category !== 'all') {
                     filtered = filtered.filter(item => item.category === filter.category);
                 }
 
-                // Filter by purchased status
                 if (!filter.showPurchased) {
                     filtered = filtered.filter(item => !item.purchased);
                 }
 
-                // Sort items
                 filtered.sort((a, b) => {
                     switch (filter.sortBy) {
                         case 'price':

@@ -57,7 +57,6 @@ const ShoppingList = () => {
         </motion.div>
       </div>
 
-      {/* Search and Sort */}
       <div className="flex flex-col gap-3 sm:gap-4 mb-6 sm:mb-8 sm:flex-row">
         <div className="flex-1 relative">
           <Search className={`absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 transition-colors duration-300 ${
@@ -98,7 +97,6 @@ const ShoppingList = () => {
         </div>
       </div>
 
-      {/* Items List */}
       <div className="sm:space-y-4">
         <AnimatePresence mode="popLayout">
           {filteredItems.length === 0 ? (
@@ -137,7 +135,6 @@ const ShoppingList = () => {
             </motion.div>
           ) : (
             <>
-              {/* Mobile: Horizontal Scroll */}
               <div className="block sm:hidden">
                 <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
                   <style jsx>{`
@@ -157,13 +154,11 @@ const ShoppingList = () => {
                       />
                     </div>
                   ))}
-                  {/* Spacer to show there are more items */}
                   {filteredItems.length > 1 && (
                     <div className="flex-shrink-0 w-4" />
                   )}
                 </div>
                 
-                {/* Scroll Indicator */}
                 {filteredItems.length > 1 && (
                   <div className="flex justify-center mt-4">
                     <div className="flex gap-1">
@@ -185,7 +180,6 @@ const ShoppingList = () => {
                 )}
               </div>
 
-              {/* Desktop: Vertical Layout */}
               <div className="hidden sm:block">
                 {filteredItems.map((item, index) => (
                   <div key={item.id} className="mb-4">
